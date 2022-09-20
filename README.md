@@ -22,5 +22,10 @@ npm install
 DEBUG=base-framework-node-express:* npm start
 ```
 
+### 의존성
+```
+npm install sequelize sequelize-cli mysql2 -g
+```
+
 [참고]
 - https://expressjs.com/ko/
