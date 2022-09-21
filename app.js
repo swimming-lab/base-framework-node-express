@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var { sequelize } = require('./models');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -36,6 +36,14 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+sequelize.sync({ force: false })
+.then(() => {
+    console.log('데이터베이스 연결 성공');
+})
+.catch((err) => {
+    console.error(err);
 });
 
 module.exports = app;
