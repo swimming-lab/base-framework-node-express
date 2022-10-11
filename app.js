@@ -6,7 +6,7 @@ var logger = require('morgan');
 var { sequelize } = require('./models');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var passport = require('passport');
 var app = express();
 
 // view engine setup
@@ -45,5 +45,7 @@ sequelize.sync({ force: false })
 .catch((err) => {
     console.error(err);
 });
+
+require('./config/passport');
 
 module.exports = app;

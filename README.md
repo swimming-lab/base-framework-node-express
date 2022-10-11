@@ -25,6 +25,13 @@ DEBUG=base-framework-node-express:* npm start
 ### 의존성
 ```
 npm install sequelize sequelize-cli mysql2 -g
+npm install express-jwt passport passport-local jsonwebtoken
+```
+
+### DB생성
+```
+sequelize init
+sequelize db:create
 ```
 
 [참고]
