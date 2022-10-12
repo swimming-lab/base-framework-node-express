@@ -65,21 +65,23 @@ router.delete('/', auth.required, function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-  if(!req.body.users.email){
+  if (!req.body.users.email) {
     return res.status(422).json({errors: {email: "can't be blank"}});
   }
-
-  if(!req.body.users.password){
+  console.log("email 성공: ", req.body.users.email);
+  if (!req.body.users.password) {
     return res.status(422).json({errors: {password: "can't be blank"}});
   }
+  console.log("password 성공: ", req.body.users.password);
 
   passport.authenticate('local', {session: false}, function(err, user, info) {
     if (err) { return next(err); }
-
+    console.log(user);
     if (user) {
       user.token = user.generateJWT();
       return res.json({user: user.toAuthJSON()});
     } else {
+      console.log(info);
       return res.status(422).json(info);
     }
   })(req, res, next);
