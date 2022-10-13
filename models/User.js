@@ -34,54 +34,53 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users", // 테이블 이름
       timestamps: true, // createAt & updateAt 활성화
       paranoid: true, // timestamps 가 활성화 되어야 사용 가능 > deleteAt 옵션 on      
-      instanceMethods: {
-        validPassword: function() {
-          return this.password === password;
-        },
-        generateJWT: function() {
-          var today = new Date();
-          var exp = new Date(today);
-          exp.setDate(today.getDate() + 60);
-        
-          return jwt.sign({
-            id: this._id,
-            username: this.name,
-            exp: parseInt(exp.getTime() / 1000),
-          }, secret);
-        },
-        toAuthJSON: function() {
-          return {
-            username: this.name,
-            email: this.email,
-            token: this.generateJWT(),
-          };
-        },
-      }
+      // Removed `classMethods` and `instanceMethods from ES6.
+      // instanceMethods: {
+      //   validPassword: function() {
+      //     return this.password === password;
+      //   },
+      //   generateJWT: function() {
+      //     var today = new Date();
+      //     var exp = new Date(today);
+      //     exp.setDate(today.getDate() + 60);
+      //     return jwt.sign({
+      //       id: this._id,
+      //       username: this.name,
+      //       exp: parseInt(exp.getTime() / 1000),
+      //     }, secret);
+      //   },
+      //   toAuthJSON: function() {
+      //     return {
+      //       username: this.name,
+      //       email: this.email,
+      //       token: this.generateJWT(),
+      //     };
+      //   },
+      // }
     });
 
-    // users.validPassword = function(password) {      
-    //   return this.password === password;
-    // };
+    users.prototype.validPassword = function(password) {      
+      return this.password === password;
+    };
 
-    // users.generateJWT = function() {
-    //   var today = new Date();
-    //   var exp = new Date(today);
-    //   exp.setDate(today.getDate() + 60);
-    
-    //   return jwt.sign({
-    //     id: this._id,
-    //     username: this.name,
-    //     exp: parseInt(exp.getTime() / 1000),
-    //   }, secret);
-    // };
+    users.prototype.generateJWT = function() {
+      var today = new Date();
+      var exp = new Date(today);
+      exp.setDate(today.getDate() + 60);
+      return jwt.sign({
+        id: this._id,
+        username: this.name,
+        exp: parseInt(exp.getTime() / 1000),
+      }, secret);
+    };
 
-    // users.toAuthJSON = function() {
-    //   return {
-    //     username: this.name,
-    //     email: this.email,
-    //     token: this.generateJWT(),
-    //   };
-    // };
+    users.prototype.toAuthJSON = function() {
+      return {
+        username: this.name,
+        email: this.email,
+        token: this.generateJWT(),
+      };
+    };
 
     return users;
   };
